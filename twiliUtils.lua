@@ -1,48 +1,69 @@
 GAME = GetGameName()
 
-function RaycastFromPlayer()
-    -- Results of the raycast
-    local hit = false
-    local endCoords = nil
-    local surfaceNormal = nil
-    local entityHit = nil
+local function RotationToDirection(deg)
+    local rad_x = deg['x'] * 0.0174532924
+    local rad_z = deg['z'] * 0.0174532924
 
+    local dir_x = -math.sin(rad_z) * math.cos(rad_x)
+    local dir_y = math.cos(rad_z) * math.cos(rad_x)
+    local dir_z = math.sin(rad_x)
+    local dir = vector3(dir_x, dir_y, dir_z)
+    return dir
+end
+
+function RaycastFromPlayerAsync()
     local playerPed = PlayerPedId()
     local camCoord = GetGameplayCamCoord()
     local camRot = GetGameplayCamRot(0)
 
-    local rayHandle = StartShapeTestLosProbe(camCoord, camCoord + RotationToDirection(camRot) * 1000, -1, playerPed)
-    local status, hit, endCoords, surfaceNormal, entityHit = GetShapeTestResult(rayHandle)
+    local rayHandle = StartShapeTestLosProbe(camCoord, camCoord + RotationToDirection(camRot) * 1000, 4294967295, playerPed, 0)
+    -- local rayHandle = StartShapeTestCapsule(camCoord, camCoord + RotationToDirection(camRot) * 10000, 5, 4294967295, playerPed, 0)
+    -- local status, hit, endCoords, surfaceNormal, entityHit = GetShapeTestResult(rayHandle)
+    -- status = GetShapeTestResult(rayHandle, hit, endCoords, surfaceNormal, entityHit)
 
-    return endCoords, entityHit, hit
+    local status = 1
+    local hit = false
+    local endCoords = vector3(0, 0, 0)
+    local surfaceNormal = vector3(0, 0, 0)
+    local entityHit = 0
+    while status ~= 2 do
+        status, hit, endCoords, surfaceNormal, entityHit = GetShapeTestResult(rayHandle)
+        -- statusloop = status
+        Citizen.Wait(0)
+    end
+
+    return entityHit
 
     -- return hit, endCoords, surfaceNormal, entityHit
 end
 
-function GetEntityLosFromPlayer(entity)
-    if not Settings['render_los'] then
-        return true
-    end
+-- function GetEntityLosFromPlayer(entity)
+--     if not Settings['render_los'] then
+--         return true
+--     end
 
-    local entity_pos = GetEntityCoords(entity)
-    local camera_pos = GetGameplayCamCoord()
-    local handle = StartShapeTestLosProbe(camera_pos.x, camera_pos.y, camera_pos.z, entity_pos.x, entity_pos.y, entity_pos.z, 4294967295, entity, 4)
+--     local entity_pos = GetEntityCoords(entity)
+--     local camera_pos = GetGameplayCamCoord()
+--     local handle = StartShapeTestLosProbe(camera_pos, entity_pos, 4294967295, entity, 4)
 
-    local status, hit, end_pos, normal, entity_hit = GetShapeTestResult(handle)
+--     local status, hit, end_pos, normal, entity_hit = GetShapeTestResult(handle)
 
-    return hit
-end
+--     return hit
+-- end
 
-function IsEntityInRangeOfPlayer(entity, distance)
+function IsEntityInRangeOfPlayer(entity, range)
     if not Settings['render_text_local'] then
         return true
+    end
+    if range == nil then
+        range = 100
     end
 
     local entity_pos = GetEntityCoords(entity)
     local camera_pos = GetGameplayCamCoord()
     local dist = #(camera_pos - entity_pos)  -- there is a GTA native for this but this is quicker than the native
 
-    if dist < 100 then
+    if dist < range then
         return true
     else
         return false
@@ -52,12 +73,15 @@ end
 
 
 
-function DrawTextOnScreen(text, xPosition, yPosition, color, size)
+function DrawTextOnScreen(text, xPosition, yPosition, color, size, justification)
     if color == nil then
         color = {r=0, g=255, b=0, a=255}
     end
     if size == nil then
         size = 0.3
+    end
+    if justification == nil then
+        justification = 0
     end
     if GAME == 'fivem' then
         SetTextFont(0)

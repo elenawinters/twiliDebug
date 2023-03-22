@@ -1,4 +1,10 @@
-function DrawEntityBoundingBox(ent, color)
+function DrawEntityBoundingBox(ent, color, origin)
+    if origin ~= 'selection' and ent == SelectedEntity then
+        return
+    end
+    -- if GAME == 'redm' and IsEntityInRangeOfPlayer(ent, 10) == false then
+    --     return
+    -- end
     box = GetEntityBoundingBox(ent);
     DrawBoundingBox(box, color);
     
@@ -86,22 +92,10 @@ end
 
 function DrawPolyMatrix(polyCollection, color)
     for i, poly in pairs(polyCollection) do
-        x1 = poly[1].x
-        y1 = poly[1].y
-        z1 = poly[1].z
-
-        x2 = poly[2].x
-        y2 = poly[2].y
-        z2 = poly[2].z
-
-        x3 = poly[3].x
-        y3 = poly[3].y
-        z3 = poly[3].z
-
         if GAME == 'fivem' then
-            DrawPoly(x1, y1, z1, x2, y2, z2, x3, y3, z3, color.r, color.g, color.b, color.a)
+            DrawPoly(poly[1], poly[2], poly[3], color.r, color.g, color.b, color.a)
         else  -- while this works on RedM, it is buggy
-            Citizen.InvokeNative(0xABD19253, x1, y1, z1, x2, y2, z2, x3, y3, z3, color.r, color.g, color.b, color.a)  -- DrawPoly
+            Citizen.InvokeNative(0xABD19253, poly[1], poly[2], poly[3], color.r, color.g, color.b, color.a)  -- DrawPoly
         end
         -- DrawPoly(x1, y1, z1, x2, y2, z2, x3, y3, z3, color.r, color.g, color.b, color.a)
         -- DrawPoly(x1, y1, z1, x2, y2, z2, x3, y3, z3, 255, 255, 255, 255)
@@ -112,18 +106,10 @@ end
 
 function DrawEdgeMatrix(linesCollection, color)
     for i, line in pairs(linesCollection) do
-        x1 = line[1].x
-        y1 = line[1].y
-        z1 = line[1].z
-
-        x2 = line[2].x
-        y2 = line[2].y
-        z2 = line[2].z
-
         if GAME == 'fivem' then
-            DrawLine(x1, y1, z1, x2, y2, z2, color.r, color.g, color.b, color.a)
+            DrawLine(line[1], line[2], color.r, color.g, color.b, color.a)
         else  -- while this works on RedM, it is buggy
-            Citizen.InvokeNative(0xB3426BCC, x1, y1, z1, x2, y2, z2, color.r, color.g, color.b, color.a)  -- DrawLine
+            Citizen.InvokeNative(0xB3426BCC, line[1], line[2], color.r, color.g, color.b, color.a)  -- DrawLine
         end
         -- DrawLine(x1, y1, z1, x2, y2, z2, color.r, color.g, color.b, color.a)
     end
