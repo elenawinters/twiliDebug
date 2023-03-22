@@ -63,7 +63,11 @@ function renderDebug()
                                 DrawEntityBoundingBox(entities[i], {r=50, g=255, b=50, a=47})
                                 if Settings['render_text'] and IsEntityInRangeOfPlayer(entities[i]) then
                                     -- SetDrawOrigin(position.x, position.y, position.z, 0)
-                                    DrawTextOnScreen(entities[i].."~n~"..GetEntityHealth(entities[i]).."/"..GetPedMaxHealth(entities[i]).."~n~"..GetEntityPopulationType(entities[i]), _x, _y)
+                                    DrawTextOnScreen(
+                                        entities[i].."~n~"..
+                                        GetEntityHealth(entities[i]).."/"..
+                                        GetPedMaxHealth(entities[i]).."~n~"..
+                                        GetEntityPopulationType(entities[i]), _x, _y)
                                 end
                             end
                         end
@@ -77,7 +81,10 @@ function renderDebug()
                                 if onScreen and IsEntityInRangeOfPlayer(entities[i]) then
                                     -- SetDrawOrigin(position.x, position.y, position.z, 0)
                                     -- DrawTextOnScreen(entities[i].."~n~"..GetEntityModel(entities[i]).."~n~"..position, 0.0, 0.0)
-                                    DrawTextOnScreen(entities[i].."~n~"..GetEntityModel(entities[i]).."~n~"..position, _x, _y, nil, 0.2)
+                                    DrawTextOnScreen(
+                                        entities[i].."~n~"..
+                                        GetEntityModel(entities[i]).."~n~"..
+                                        position, _x, _y, nil, 0.2)
                                 end
                             end
                         end
@@ -89,7 +96,9 @@ function renderDebug()
                             if onScreen then
                                 DrawEntityBoundingBox(entities[i], {r=255, g=150, b=0, a=47})
                                 if Settings['render_text'] and IsEntityInRangeOfPlayer(entities[i]) then
-                                    DrawTextOnScreen(entities[i].."~n~"..GetEntityModel(entities[i]).."~n~"..position, _x, _y)
+                                    DrawTextOnScreen(entities[i].."~n~"..
+                                    GetEntityModel(entities[i]).."~n~"..
+                                    position, _x, _y)
                                 end
                             end
                         end
@@ -101,7 +110,10 @@ function renderDebug()
                             if onScreen then
                                 DrawEntityBoundingBox(entities[i], {r=0, g=0, b=255, a=47})
                                 if Settings['render_text'] and IsEntityInRangeOfPlayer(entities[i]) then
-                                    DrawTextOnScreen(entities[i].."~n~"..GetEntityModel(entities[i]).."~n~"..position, _x, _y)
+                                    DrawTextOnScreen(
+                                        entities[i].."~n~"..
+                                        GetEntityModel(entities[i]).."~n~"..
+                                        position, _x, _y)
                                 end
                             end
                         end

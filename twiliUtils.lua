@@ -73,7 +73,7 @@ end
 
 
 
-function DrawTextOnScreen(text, xPosition, yPosition, color, size, justification)
+function DrawTextOnScreen(text, xPosition, yPosition, color, size, justification, center)
     if color == nil then
         color = {r=0, g=255, b=0, a=255}
     end
@@ -83,12 +83,14 @@ function DrawTextOnScreen(text, xPosition, yPosition, color, size, justification
     if justification == nil then
         justification = 0
     end
+    if center == true or center == nil then
+        SetTextCentre(true)
+    end
     if GAME == 'fivem' then
         SetTextFont(0)
         -- SetTextScale(1.0, 0.4)
         SetTextScale(0.0, size)
         SetTextColour(color.r, color.g, color.b, color.a)
-        SetTextCentre(true)
         -- SetTextColour(color['r'], color['g'], color['b'], color['a'])
         SetTextOutline()
         BeginTextCommandDisplayText("STRING");
@@ -99,7 +101,6 @@ function DrawTextOnScreen(text, xPosition, yPosition, color, size, justification
         SetTextColor(color.r, color.g, color.b, color.a)
         SetTextScale(0.0, 0.35)
         SetTextFontForCurrentCommand(0)
-        SetTextCentre(true)
     
         DisplayText(vstr, xPosition, yPosition)
     end
