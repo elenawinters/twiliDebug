@@ -9,3 +9,6 @@ While RedM is supported, it is quite restrictive in capability with some aspects
 Do NOT use TwiliDebug's `twiliset render` objects if you are sensitivie to flashing lights when running this script on RedM.
 For some reason, RedM can not handle the amount of DrawPoly calls being made by those functions.
 
+# Limitations
+
+Currently, entity selection does not work on RedM. This is due to needing to implement legacy keybinding for it.
