@@ -3,6 +3,7 @@ SelectedEntity = nil
 local CursorLooping = false
 local Cursor = false
 
+
 RegisterKeyMapping('+deleteselectedentity', 'Delete selected entity', 'keyboard', 'DELETE')
 
 RegisterCommand('+deleteselectedentity', function()
@@ -20,7 +21,6 @@ end, false)
 RegisterCommand('-deleteselectedentity', function()
     return
 end, false)
-
 
 
 RegisterKeyMapping('+rendercursorforselection', 'Display cursor in center of frame', 'keyboard', 'LMENU')
@@ -79,9 +79,7 @@ function selectEntity()
     selcoord = GetEntityCoords(SelectedEntity)
     if selcoord == vector3(0, 0, 0) then
         SelectedLooping = false
-        return
-    end
-    if SelectedLooping then
+        SelectedEntity = nil  -- prevent Bounding script from crashing
         return
     end
     print(SelectedEntity)
@@ -89,10 +87,18 @@ end
 
 function drawSelection()
     Citizen.CreateThread(function ()
+        if SelectedLooping == true then
+            return
+        end
         SelectedLooping = true
+        selInvoke("setFocus", true)
+        selInvoke("toggle", true)
         while SelectedLooping do
             if DoesEntityExist(SelectedEntity) == false then
                 SelectedLooping = false
+                SelectedEntity = nil  -- prevent Bounding script from crashing... potentially. haven't run into this but, it's good practice
+                selInvoke("setFocus", false)
+                selInvoke("toggle", false)
                 return
             end
             -- if SelectedEntity == nil then
@@ -100,31 +106,86 @@ function drawSelection()
             --     return
             -- end
             DrawEntityBoundingBox(SelectedEntity, {r=106, g=26, b=176, a=47}, 'selection')
+            entity_model = GetEntityModel(SelectedEntity)
+            model_name = GetEntityArchetypeName(SelectedEntity)
             if IsEntityAVehicle(SelectedEntity) then
-                DrawTextOnScreen(
-                    SelectedEntity.."~n~"..
-                    GetEntityModel(SelectedEntity).."~n~"..
-                    -- GetEntityHealth(SelectedEntity).."/"..
-                    -- GetPedMaxHealth(SelectedEntity).."~n~"..
-                    GetVehicleEngineTemperature(SelectedEntity).."~n~"..
-                    GetEntityCoords(SelectedEntity),
-                    0.7, 0.2, nil, nil, 2, false)
+                -- SendNUIMessage({
+                --     hello = "world",
+                --     action = "showMessage"
+                -- })
+                
+                selInvoke("updateText", {
+                    ["twdebug"] = ([[
+                        <div class='tooltip'><span class='tooltip-text'>%s</span></div>
+                    ]]):format(
+                        SelectedEntity.."<br>"..
+                        entity_model.." / "..model_name.."<br>"..
+                        -- GetEntityHealth(SelectedEntity).."/"..
+                        -- GetPedMaxHealth(SelectedEntity).."~n~"..
+                        GetVehicleEngineTemperature(SelectedEntity).."<br>"..
+                        GetVehicleCurrentRpm(SelectedEntity).."<br>"..
+                        -- GetEntityArchetypeName(SelectedEntity).."~n~"..
+                        GetEntityCoords(SelectedEntity)),
+                })
+                -- DrawTextOnScreen(
+                --     SelectedEntity.."~n~"..
+                --     entity_model.." / "..model_name.."~n~"..
+                --     -- GetEntityHealth(SelectedEntity).."/"..
+                --     -- GetPedMaxHealth(SelectedEntity).."~n~"..
+                --     GetVehicleEngineTemperature(SelectedEntity).."~n~"..
+                --     GetVehicleCurrentRpm(SelectedEntity).."~n~"..
+                --     -- GetEntityArchetypeName(SelectedEntity).."~n~"..
+                --     GetEntityCoords(SelectedEntity),
+                --     0.7, 0.2, nil, nil, 2, false)
             elseif IsEntityAPed(SelectedEntity) then
-                DrawTextOnScreen(
-                    SelectedEntity.."~n~"..
-                    GetEntityModel(SelectedEntity).."~n~"..
-                    GetEntityHealth(SelectedEntity).."/"..GetPedMaxHealth(SelectedEntity).."~n~"..
-                    GetEntityPopulationType(SelectedEntity).."~n~"..
-                    GetEntityCoords(SelectedEntity),
-                    0.7, 0.2, nil, nil, 2, false)
+                selInvoke("updateText", {
+                    ["twdebug"] = ([[
+                        <div class='tooltip'><span class='tooltip-text'>%s</span></div>
+                    ]]):format(
+                        SelectedEntity.."<br>"..
+                    entity_model.." / "..model_name.."<br>"..
+                    GetEntityHealth(SelectedEntity).."/"..GetPedMaxHealth(SelectedEntity).."<br>"..
+                    GetEntityPopulationType(SelectedEntity).."<br>"..
+                    GetEntityCoords(SelectedEntity)),
+                })
+                -- DrawTextOnScreen(
+                --     SelectedEntity.."~n~"..
+                --     entity_model.." / "..model_name.."~n~"..
+                --     GetEntityHealth(SelectedEntity).."/"..GetPedMaxHealth(SelectedEntity).."~n~"..
+                --     GetEntityPopulationType(SelectedEntity).."~n~"..
+                --     GetEntityCoords(SelectedEntity),
+                --     0.7, 0.2, nil, nil, 2, false)
             else
-                DrawTextOnScreen(
-                    SelectedEntity.."~n~"..
-                    GetEntityModel(SelectedEntity).."~n~"..
-                    GetEntityCoords(SelectedEntity), 
-                    0.7, 0.2, nil, nil, 2, false)
+                selInvoke("updateText", {
+                    ["twdebug"] = ([[
+                        <div class='tooltip'><span class='tooltip-text'>%s</span></div>
+                    ]]):format(
+                        SelectedEntity.."<br>"..
+                        entity_model.." / "..model_name.."<br>"..
+                        GetEntityCoords(SelectedEntity)), 
+                })
+                -- DrawTextOnScreen(
+                --     SelectedEntity.."~n~"..
+                --     entity_model.." / "..model_name.."~n~"..
+                --     GetEntityCoords(SelectedEntity), 
+                --     0.7, 0.2, nil, nil, 2, false)
             end
             Citizen.Wait(0)
         end
     end)
 end
+
+
+function selInvoke(_type, data)
+	SendNUIMessage({
+		callback = {
+			type = _type,
+			data = data,
+		},
+	})
+end
+
+-- RegisterNUICallback("updateStats", function(data, cb)
+-- 	cb(true)
+-- 	Debugger:SetHandling(tonumber(data.key), data.value)
+-- end)

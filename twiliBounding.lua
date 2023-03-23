@@ -11,8 +11,8 @@ function DrawEntityBoundingBox(ent, color, origin)
 end
 
 function GetEntityBoundingBox(ent)
-    min = vector3(0, 0, 0)
-    max = vector3(0, 0, 0)
+    min, max = vector3(0, 0, 0)
+    -- max = vector3(0, 0, 0)
 
     min, max = GetModelDimensions(GetEntityModel(ent))
 

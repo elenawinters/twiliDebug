@@ -5,15 +5,15 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 author 'Elena Winters'
 description 'Debug tools used by myself for development. Compatible with FiveM and RedM'
-version '23.3.21'
+version '23.3.22'
 
--- ui_page 'html/ui.html'
+ui_page 'html/index.html'
 
--- files {
---     'html/ui.html',
---     'html/script.js',
---     'html/style.css',
--- }
+files {
+    'html/index.html',
+    'html/index.css',
+    'html/selector.js'
+}
 
 -- client_script 'twiliClient.lua'
 
