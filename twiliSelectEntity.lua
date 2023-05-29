@@ -145,6 +145,7 @@ function drawSelection()
                         GetVehicleOilLevel(SelectedEntity).."<br>"..
                         GetVehicleCurrentRpm(SelectedEntity).."<br>"..
                         GetVehicleDirtLevel(SelectedEntity).."<br>"..
+                        "Health: "..GetEntityHealth(SelectedEntity).."<br>"..
                         -- GetEntityArchetypeName(SelectedEntity).."~n~"..
                         GetEntityCoords(SelectedEntity)),
                 })
@@ -183,7 +184,8 @@ function drawSelection()
                     ]]):format(
                         SelectedEntity.."<br>"..
                         entity_model.." / "..model_name.."<br>"..
-                        GetEntityCoords(SelectedEntity)), 
+                        "Health: "..GetEntityHealth(SelectedEntity).."<br>"..
+                        GetEntityCoords(SelectedEntity)),
                 })
                 -- DrawTextOnScreen(
                 --     SelectedEntity.."~n~"..
