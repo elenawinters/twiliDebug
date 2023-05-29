@@ -1,0 +1,102 @@
+// This is a port of my lua port of vMenu's bounding box rendering
+// Not tested yet, hopefully it works
+
+function DrawEntityBoundingBox(ent, color, origin) {
+    if (origin != 'selection' && ent == SelectedEntity) { return; }
+    box = GetEntityBoundingBox(ent);
+    DrawBoundingBox(box, color)
+}
+
+function GetEntityBoundingBox(ent) {
+    let [min, max] = GetModelDimensions(GetEntityModel(ent))
+    const pad = 0.001
+
+    let retval = {}
+    // Bottom
+    retval.push(GetOffsetFromEntityInWorldCoords(ent, min[0] - pad, min[1] - pad, min[2] - pad))
+    retval.push(GetOffsetFromEntityInWorldCoords(ent, max[0] + pad, min[1] - pad, min[2] - pad))
+    retval.push(GetOffsetFromEntityInWorldCoords(ent, max[0] + pad, max[1] + pad, min[2] - pad))
+    retval.push(GetOffsetFromEntityInWorldCoords(ent, min[0] - pad, max[1] + pad, min[2] - pad))
+
+    // Top
+    retval.push(GetOffsetFromEntityInWorldCoords(ent, min[0] - pad, min[1] - pad, max[2] + pad))
+    retval.push(GetOffsetFromEntityInWorldCoords(ent, max[0] + pad, min[1] - pad, max[2] + pad))
+    retval.push(GetOffsetFromEntityInWorldCoords(ent, max[0] + pad, max[1] + pad, max[2] + pad))
+    retval.push(GetOffsetFromEntityInWorldCoords(ent, min[0] - pad, max[1] + pad, max[2] + pad))
+
+    return retval
+}
+
+function DrawBoundingBox(box, color) {
+    const polyMatrix = GetBoundingBoxPolyMatrix(box)
+    const edgeMatrix = GetBoundingBoxEdgeMatrix(box)
+
+    DrawPolyMatrix(polyMatrix, color);
+    DrawEdgeMatrix(edgeMatrix, {r:255, g:255, b:255, a:255});
+}
+
+
+function GetBoundingBoxPolyMatrix(box) {
+    return [
+        [box[2], box[1], box[0]],
+        [box[3], box[2], box[0]],
+
+        [box[4], box[5], box[6]],
+        [box[4], box[6], box[7]],
+
+        [box[2], box[3], box[6]],
+        [box[7], box[6], box[3]],
+
+        [box[0], box[1], box[4]],
+        [box[5], box[4], box[1]],
+
+        [box[1], box[2], box[5]],
+        [box[2], box[6], box[5]],
+
+        [box[4], box[7], box[3]],
+        [box[4], box[3], box[0]]
+    ]
+}
+
+function GetBoundingBoxEdgeMatrix(box) {
+    return [
+        [box[0], box[1]],
+        [box[1], box[2]],
+        [box[2], box[3]],
+        [box[3], box[0]],
+
+        [box[4], box[5]],
+        [box[5], box[6]],
+        [box[6], box[7]],
+        [box[7], box[4]],
+
+        [box[0], box[4]],
+        [box[1], box[5]],
+        [box[2], box[6]],
+        [box[3], box[7]]
+    ]
+}
+
+function DrawPolyMatrix(polyCollection, color) {
+    polyCollection.forEach((poly, i) => {
+        switch(GAME) {
+            case FIVEM:
+                DrawPoly(poly[0], poly[1], poly[2], color.r, color.g, color.b, color.a)
+                break;
+            default:
+                Citizen.invokeNative('0xABD19253', poly[0], poly[1], poly[2], color.r, color.g, color.b, color.a)  // DrawPoly
+        }
+    })
+}
+
+function DrawEdgeMatrix(linesCollection, color) {
+    linesCollection.forEach((line, i) => {
+        switch(GAME) {
+            case FIVEM:
+                DrawLine(line[0], line[1], color.r, color.g, color.b, color.a)
+                break;
+            default:
+                Citizen.InvokeNative(0xB3426BCC, line[0], line[1], color.r, color.g, color.b, color.a)  // DrawLine
+        }
+    })
+}
