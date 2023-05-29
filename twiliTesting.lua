@@ -1,5 +1,9 @@
 
 
+
+
+
+
 function test_weather_transition()
     local w1 = 0
     local w2 = 0

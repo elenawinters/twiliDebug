@@ -25,6 +25,8 @@ client_scripts {
     'twiliBounding.lua',
     'twiliTesting.lua',
     'twiliUtils.lua',
-    'twiliSelectEntity.lua'
+    'twiliSelectEntity.lua',
+    'twiliDamageTest.js',
+    'twiliTesting.js'
 }
 

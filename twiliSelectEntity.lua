@@ -3,6 +3,9 @@ SelectedEntity = nil
 local CursorLooping = false
 local Cursor = false
 
+SetEntityDrawOutlineShader(1)
+SetEntityDrawOutlineColor(0, 255, 0, 255)
+
 
 RegisterKeyMapping('+deleteselectedentity', 'Delete selected entity', 'keyboard', 'DELETE')
 
@@ -60,6 +63,9 @@ RegisterKeyMapping('+selectentity', 'Raycast out and select an entity', 'keyboar
 
 RegisterCommand('+selectentity', function()
     selectEntity()
+    -- if not IsEntityAPed(SelectedEntity) then
+    --     SetEntityDrawOutline(SelectedEntity, true)
+    -- end
     drawSelection()
 end, false)
 
@@ -75,14 +81,27 @@ end, false)
 -- end, false)
 
 function selectEntity()
+    lastsel = SelectedEntity
     SelectedEntity = RaycastFromPlayerAsync()
+    if lastsel ~= SelectedEntity then
+        if not IsEntityAPed(lastsel) then
+            SetEntityDrawOutline(lastsel, false)
+        end
+    end
     selcoord = GetEntityCoords(SelectedEntity)
     if selcoord == vector3(0, 0, 0) then
+        -- if not IsEntityAPed(lastsel) then
+        --     SetEntityDrawOutline(lastsel, false)
+        -- end
         SelectedLooping = false
         SelectedEntity = nil  -- prevent Bounding script from crashing
         return
     end
     print(SelectedEntity)
+    if not IsEntityAPed(SelectedEntity) then
+        SetEntityDrawOutline(SelectedEntity, true)
+    end
+    -- SetEntityDrawOutline(SelectedEntity, true)
 end
 
 function drawSelection()
@@ -123,7 +142,9 @@ function drawSelection()
                         -- GetEntityHealth(SelectedEntity).."/"..
                         -- GetPedMaxHealth(SelectedEntity).."~n~"..
                         GetVehicleEngineTemperature(SelectedEntity).."<br>"..
+                        GetVehicleOilLevel(SelectedEntity).."<br>"..
                         GetVehicleCurrentRpm(SelectedEntity).."<br>"..
+                        GetVehicleDirtLevel(SelectedEntity).."<br>"..
                         -- GetEntityArchetypeName(SelectedEntity).."~n~"..
                         GetEntityCoords(SelectedEntity)),
                 })
@@ -142,10 +163,10 @@ function drawSelection()
                     ["twdebug"] = ([[
                         <div class='tooltip'><span class='tooltip-text'>%s</span></div>
                     ]]):format(
-                        SelectedEntity.."<br>"..
-                    entity_model.." / "..model_name.."<br>"..
-                    GetEntityHealth(SelectedEntity).."/"..GetPedMaxHealth(SelectedEntity).."<br>"..
-                    GetEntityPopulationType(SelectedEntity).."<br>"..
+                        "SelectedEntity: "..SelectedEntity.."<br>"..
+                    "Model: "..entity_model.." / "..model_name.."<br>"..
+                    "Health: "..GetEntityHealth(SelectedEntity).."/"..GetPedMaxHealth(SelectedEntity).." ("..GetPedArmour(SelectedEntity).." armor)".."<br>"..
+                    "Population Type: "..GetEntityPopulationType(SelectedEntity).."<br>"..
                     GetEntityCoords(SelectedEntity)),
                 })
                 -- DrawTextOnScreen(
@@ -172,6 +193,7 @@ function drawSelection()
             end
             Citizen.Wait(0)
         end
+
     end)
 end
 
