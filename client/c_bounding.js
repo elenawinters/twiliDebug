@@ -1,17 +1,19 @@
 // This is a port of my lua port of vMenu's bounding box rendering
+// Although this will work in RedM, it is buggy, laggy, and not recommended.
 // Not tested yet, hopefully it works
 
 function DrawEntityBoundingBox(ent, color, origin) {
     if (origin != 'selection' && ent == SelectedEntity) { return; }
+    if (color.a == null) { color = {r:color[0], g:color[1], b:color[2], a:color[3]}; }
     box = GetEntityBoundingBox(ent);
-    DrawBoundingBox(box, color)
+    DrawBoundingBox(box, color);
 }
 
 function GetEntityBoundingBox(ent) {
     let [min, max] = GetModelDimensions(GetEntityModel(ent))
     const pad = 0.001
 
-    let retval = {}
+    let retval = []
     // Bottom
     retval.push(GetOffsetFromEntityInWorldCoords(ent, min[0] - pad, min[1] - pad, min[2] - pad))
     retval.push(GetOffsetFromEntityInWorldCoords(ent, max[0] + pad, min[1] - pad, min[2] - pad))

@@ -5,7 +5,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 author 'Elena Winters'
 description 'Debug tools used by myself for development. Compatible with FiveM and RedM'
-version '23.5.29'
+version '23.5.30'
 
 dependencies {
     'twiliCore'
@@ -20,28 +20,30 @@ files {
 }
 
 shared_scripts {
-    '@twiliCore/u_common.js'
+    '@twiliCore/shared/u_common.js'
 }
 
 -- client_script 'twiliClient.lua'
 
 client_scripts {
-    '@twiliCore/c_globals.js',
+    '@twiliCore/client/c_globals.js',
     'client/c_control.js',
     'client/c_settings.js',
     'client/c_utils.js',
+    'client/c_bounding.js',
+    'client/c_select_entity.js'
 
 
 
-    'twiliSettings.lua',
-    'twiliRender.lua',
-    'twiliNoLocals.lua',
-    'twiliControl.lua',
-    'twiliBounding.lua',
-    'twiliTesting.lua',
-    'twiliUtils.lua',
-    'twiliSelectEntity.lua',
-    'twiliDamageTest.js',
-    'twiliTesting.js'
+    -- 'twiliSettings.lua',
+    -- 'twiliRender.lua',
+    -- 'twiliNoLocals.lua',
+    -- 'twiliControl.lua',
+    -- 'twiliBounding.lua',
+    -- 'twiliTesting.lua',
+    -- 'twiliUtils.lua',
+    -- 'twiliSelectEntity.lua',
+    -- 'twiliDamageTest.js',
+    -- 'twiliTesting.js'
 }
 

@@ -41,11 +41,6 @@ function GetForwardVector(deg) {
     return dir
 }
 
-// var [testStatus, hit, endCoords, surfaceNormal, entityHit] = [1, false, [0, 0, 0], [0, 0, 0], 0]
-// function fuckthisfuckingshit(_hit, _endCoords, _surfaceNormal, _entityHit) {
-//     [hit, endCoords, surfaceNormal, entityHit] = [_hit, _endCoords, _surfaceNormal, _entityHit]
-// }
-
 function RaycastFromPlayerAsync() {
     const playerPed = PLAYER_PED()
     const camCoord = GetGameplayCamCoord()
@@ -56,21 +51,16 @@ function RaycastFromPlayerAsync() {
     // This doesn't take the coord arrays.
     const rayHandle = StartShapeTestLosProbe(camCoord[0], camCoord[1], camCoord[2], castCoord[0], castCoord[1], castCoord[2], 4294967295, playerPed, 0)
 
-    let [testStatus, hit, endCoords, surfaceNormal, entityHit] = [1, false, [0, 0, 0], [0, 0, 0], 0]
+    var [testStatus, hit, endCoords, surfaceNormal, entityHit] = [1, false, [0, 0, 0], [0, 0, 0], 0]
 
-
-    // const thread = setTick(() => {
-    // THIS IS CRASHING?!?!?
-    do {
+    const thread = setTick(() => {
         [testStatus, hit, endCoords, surfaceNormal, entityHit] = GetShapeTestResult(rayHandle)  // this is a bitch
-        console.log(testStatus)
-        // exports.twiliCore.util().Delay(2000)  // huh
-        Delay(0)
-    } while (testStatus != 2)
-    // })
+        if (testStatus != 1) { clearTick(thread); }
+        console.log(entityHit)
+        return entityHit
+    })
     // console.log(thread)
-    console.log(entityHit)
-    // console.log('has it been 5 seconds?')
+
     return entityHit
     // return hit, endCoords, surfaceNormal, entityHit
 }

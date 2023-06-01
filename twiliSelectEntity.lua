@@ -4,7 +4,8 @@ local CursorLooping = false
 local Cursor = false
 
 SetEntityDrawOutlineShader(1)
-SetEntityDrawOutlineColor(0, 255, 0, 255)
+SetEntityDrawOutlineColor(255, 255, 255, 127)
+-- SetEntityDrawOutlineColor(0, 255, 0, 255)
 
 
 RegisterKeyMapping('+deleteselectedentity', 'Delete selected entity', 'keyboard', 'DELETE')

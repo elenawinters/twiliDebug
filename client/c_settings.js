@@ -1,4 +1,4 @@
-Settings = {
+let Settings = {
     'veh_handling': false,
     'render_peds': false,
     'render_objects': false,
