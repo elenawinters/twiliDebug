@@ -54,25 +54,27 @@ function RaycastFromPlayerAsync() {
     const castCoord = arrayAdd(camCoord, arrayMultiply(GetForwardVector(camRot), 1000))
 
     // This doesn't take the coord arrays.
-    const rayHandle = StartShapeTestLosProbe(camCoord[0], camCoord[1], camCoord[2], castCoord[0], castCoord[1], castCoord[2], 4294967295, playerPed, 0)
+    // using expensive cuz async is a pain right now. need to learn how to handle it
+    const rayHandle = StartExpensiveSynchronousShapeTestLosProbe(camCoord[0], camCoord[1], camCoord[2], castCoord[0], castCoord[1], castCoord[2], 4294967295, playerPed, 0)
+    // const rayHandle = StartShapeTestLosProbe(camCoord[0], camCoord[1], camCoord[2], castCoord[0], castCoord[1], castCoord[2], 4294967295, playerPed, 0)
 
-    let [testStatus, hit, endCoords, surfaceNormal, entityHit] = [1, false, [0, 0, 0], [0, 0, 0], 0]
+    // let [testStatus, hit, endCoords, surfaceNormal, entityHit] = [1, false, [0, 0, 0], [0, 0, 0], 0]
 
-
+    let [testStatus, hit, endCoords, surfaceNormal, entityHit] = GetShapeTestResult(rayHandle)
     // const thread = setTick(() => {
     // THIS IS CRASHING?!?!?
-    do {
-        [testStatus, hit, endCoords, surfaceNormal, entityHit] = GetShapeTestResult(rayHandle)  // this is a bitch
-        console.log(testStatus)
-        // exports.twiliCore.util().Delay(2000)  // huh
-        Delay(0)
-    } while (testStatus != 2)
+    // do {
+    //     [testStatus, hit, endCoords, surfaceNormal, entityHit] = GetShapeTestResult(rayHandle)  // this is a bitch
+    //     console.log(testStatus)
+    //     // exports.twiliCore.util().Delay(2000)  // huh
+    //     Delay(0)
+    // } while (testStatus != 2)
     // })
     // console.log(thread)
-    console.log(entityHit)
+    // console.log(entityHit)
     // console.log('has it been 5 seconds?')
-    return entityHit
-    // return hit, endCoords, surfaceNormal, entityHit
+    // return entityHit
+    return hit, endCoords, surfaceNormal, entityHit
 }
 
 // function GetEntityLosFromPlayer(entity)

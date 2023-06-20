@@ -68,11 +68,16 @@ function selectEntity() {
     }
 
     selcoord = GetEntityCoords(SelectedEntity)
-    if (selcoord == [0, 0, 0]) {
+    // console.log(selcoord)
+    // console.log([0, 0, 0])
+    // console.log(selcoord == [0, 0, 0])
+    if (selcoord[0] == 0 && selcoord[1] == 0 && selcoord[2] == 0) {  // js is weird, cuz [0, 0, 0] does not equal [0, 0, 0] according to it
+        // console.log('running blank logic')
         SelectedLooping = false;
         SelectedEntity = null;  // prevent Bounding script from crashing
         return;
     }
+    // console.log(SelectedEntity)
 
     if (!IsEntityAPed(SelectedEntity)) {
         SetEntityDrawOutline(SelectedEntity, true);
@@ -86,12 +91,14 @@ function drawSelection() {
     selInvoke("toggle", true)
 
     const thread = setTick(() => {
+        // clearTick(thread);
         if (!DoesEntityExist(SelectedEntity)) {
             SelectedLooping = false;
             SelectedEntity = null;  // prevent Bounding script from crashing... potentially. haven't run into this but, it's good practice
             selInvoke("setFocus", false);
             selInvoke("toggle", false); }
         if (!SelectedLooping) { clearTick(thread); }
+        // console.log(SelectedEntity)
 
         DrawEntityBoundingBox(SelectedEntity, {r:106, g:26, b:176, a:47}, 'selection')
         entity_model = GetEntityModel(SelectedEntity)
@@ -101,6 +108,7 @@ function drawSelection() {
                 ["twdebug"]: ([`
                     <div class='tooltip'><span class='tooltip-text'>
                         ${SelectedEntity}<br>
+                        ${GetEntityCoords(SelectedEntity)}<br>
 
                     </span></div>
                 `])

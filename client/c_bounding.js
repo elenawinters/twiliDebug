@@ -1,11 +1,12 @@
 // This is a port of my lua port of vMenu's bounding box rendering
 // Although this will work in RedM, it is buggy, laggy, and not recommended.
-// Not tested yet, hopefully it works
+// Not tested yet, hopefully it works (update: it didn't, fixed now tho)
 
 function DrawEntityBoundingBox(ent, color, origin) {
     if (origin != 'selection' && ent == SelectedEntity) { return; }
     if (color.a == null) { color = {r:color[0], g:color[1], b:color[2], a:color[3]}; }
     box = GetEntityBoundingBox(ent);
+    // console.log(box)
     DrawBoundingBox(box, color);
 }
 
@@ -83,10 +84,20 @@ function DrawPolyMatrix(polyCollection, color) {
     polyCollection.forEach((poly, i) => {
         switch(GAME) {
             case FIVEM:
-                DrawPoly(poly[0], poly[1], poly[2], color.r, color.g, color.b, color.a)
+                DrawPoly(
+                    poly[0][0], poly[0][1], poly[0][2],
+                    poly[1][0], poly[1][1], poly[1][2], 
+                    poly[2][0], poly[2][1], poly[2][2],
+                    color.r, color.g, color.b, color.a
+                )
                 break;
             default:
-                Citizen.invokeNative('0xABD19253', poly[0], poly[1], poly[2], color.r, color.g, color.b, color.a)  // DrawPoly
+                Citizen.invokeNative('0xABD19253', 
+                    poly[0][0], poly[0][1], poly[0][2],
+                    poly[1][0], poly[1][1], poly[1][2], 
+                    poly[2][0], poly[2][1], poly[2][2],
+                    color.r, color.g, color.b, color.a
+                )  // DrawPoly
         }
     })
 }
@@ -95,10 +106,18 @@ function DrawEdgeMatrix(linesCollection, color) {
     linesCollection.forEach((line, i) => {
         switch(GAME) {
             case FIVEM:
-                DrawLine(line[0], line[1], color.r, color.g, color.b, color.a)
+                DrawLine(
+                    line[0][0], line[0][1], line[0][2],
+                    line[1][0], line[1][1], line[1][2],
+                    color.r, color.g, color.b, color.a
+                )
                 break;
             default:
-                Citizen.InvokeNative(0xB3426BCC, line[0], line[1], color.r, color.g, color.b, color.a)  // DrawLine
+                Citizen.invokeNative('0xB3426BCC', 
+                    line[0][0], line[0][1], line[0][2],
+                    line[1][0], line[1][1], line[1][2],
+                    color.r, color.g, color.b, color.a
+                )  // DrawLine
         }
     })
 }
