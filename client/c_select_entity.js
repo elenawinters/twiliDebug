@@ -3,20 +3,20 @@ let SelectedEntity = null
 let CursorLooping = false
 let Cursor = false
 
+const tab_insert = '&nbsp;&nbsp;&nbsp;&nbsp;'
+
 // Deletion Logic
 RegisterKeyMapping('+twiliDebug:deleteSelection', 'Delete selected entity', 'keyboard', 'DELETE')
 
 RegisterCommand('+twiliDebug:deleteSelection', (source, args) => {
     if (!SelectedEntity) { return; }
-    console.log(IsEntityAnObject(SelectedEntity));
     if (IsEntityAnObject(SelectedEntity)) {
         SetEntityAsMissionEntity(SelectedEntity, true, true);
     }
     DeleteEntity(SelectedEntity)
 });
 
-RegisterCommand('+twiliDebug:deleteSelection', (source, args) => { return; });
-
+RegisterCommand('-twiliDebug:deleteSelection', (source, args) => { return; });
 
 // Cursor Logic
 
@@ -59,7 +59,7 @@ function selectEntity() {
     lastsel = SelectedEntity;
     // console.log(SelectedEntity)
     // RaycastFromPlayerAsync_SetSelection();
-    SelectedEntity = RaycastFromPlayerAsync();
+    SelectedEntity = RaycastFromPlayer();
     // console.log('abbb')
     // console.log(SelectedEntity)
     // console.log('baaa')
@@ -103,17 +103,17 @@ function drawSelection() {
         DrawEntityBoundingBox(SelectedEntity, {r:106, g:26, b:176, a:47}, 'selection')
         entity_model = GetEntityModel(SelectedEntity)
         model_name = GetEntityArchetypeName(SelectedEntity)
-        if (IsEntityAVehicle(SelectedEntity)) {
-            selInvoke("updateText", {
-                ["twdebug"]: ([`
-                    <div class='tooltip'><span class='tooltip-text'>
-                        ${SelectedEntity}<br>
-                        ${GetEntityCoords(SelectedEntity)}<br>
-
-                    </span></div>
-                `])
-            })
-        }
+        entity_coords = GetEntityCoords(SelectedEntity)
+        entity_rotation = GetEntityRotation(SelectedEntity)
+        // Rotation:<br>${tab_insert}${entity_rotation[0]}<br>${tab_insert}${entity_rotation[1]}<br>${tab_insert}${entity_rotation[2]}<br>
+        selInvoke("updateText", {
+            ["twdebug"]: ([`
+                <div class='tooltip'><span class='tooltip-text'>
+                    ${SelectedEntity}: <br>${tab_insert}${model_name} / ${entity_model}<br>
+                    Coordinates:<br>${tab_insert}${entity_coords[0]}<br>${tab_insert}${entity_coords[1]}<br>${tab_insert}${entity_coords[2]}<br>
+                </span></div>
+            `])
+        })
     })
 }
 

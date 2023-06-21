@@ -86,15 +86,15 @@ function DrawPolyMatrix(polyCollection, color) {
             case FIVEM:
                 DrawPoly(
                     poly[0][0], poly[0][1], poly[0][2],
-                    poly[1][0], poly[1][1], poly[1][2], 
+                    poly[1][0], poly[1][1], poly[1][2],
                     poly[2][0], poly[2][1], poly[2][2],
                     color.r, color.g, color.b, color.a
                 )
                 break;
             default:
-                Citizen.invokeNative('0xABD19253', 
+                Citizen.invokeNative('0xABD19253',
                     poly[0][0], poly[0][1], poly[0][2],
-                    poly[1][0], poly[1][1], poly[1][2], 
+                    poly[1][0], poly[1][1], poly[1][2],
                     poly[2][0], poly[2][1], poly[2][2],
                     color.r, color.g, color.b, color.a
                 )  // DrawPoly
@@ -113,7 +113,7 @@ function DrawEdgeMatrix(linesCollection, color) {
                 )
                 break;
             default:
-                Citizen.invokeNative('0xB3426BCC', 
+                Citizen.invokeNative('0xB3426BCC',
                     line[0][0], line[0][1], line[0][2],
                     line[1][0], line[1][1], line[1][2],
                     color.r, color.g, color.b, color.a

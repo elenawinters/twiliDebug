@@ -46,7 +46,7 @@ function GetForwardVector(deg) {
 //     [hit, endCoords, surfaceNormal, entityHit] = [_hit, _endCoords, _surfaceNormal, _entityHit]
 // }
 
-function RaycastFromPlayerAsync() {
+function RaycastFromPlayer() {
     const playerPed = PLAYER_PED()
     const camCoord = GetGameplayCamCoord()
     const camRot = GetGameplayCamRot(0)
@@ -55,7 +55,7 @@ function RaycastFromPlayerAsync() {
 
     // This doesn't take the coord arrays.
     // using expensive cuz async is a pain right now. need to learn how to handle it
-    const rayHandle = StartExpensiveSynchronousShapeTestLosProbe(camCoord[0], camCoord[1], camCoord[2], castCoord[0], castCoord[1], castCoord[2], 4294967295, playerPed, 0)
+    const rayHandle = StartExpensiveSynchronousShapeTestLosProbe(camCoord[0], camCoord[1], camCoord[2], castCoord[0], castCoord[1], castCoord[2], 4294967295, playerPed, 4)
     // const rayHandle = StartShapeTestLosProbe(camCoord[0], camCoord[1], camCoord[2], castCoord[0], castCoord[1], castCoord[2], 4294967295, playerPed, 0)
 
     // let [testStatus, hit, endCoords, surfaceNormal, entityHit] = [1, false, [0, 0, 0], [0, 0, 0], 0]
