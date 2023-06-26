@@ -5,7 +5,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 author 'Elena Winters'
 description 'Debug tools used by myself for development. Compatible with FiveM and RedM'
-version '23.5.30'
+version '23.6.26'
 
 dependencies {
     'twiliCore'
@@ -28,6 +28,7 @@ shared_scripts {
 client_scripts {
     '@twiliCore/client/c_globals.js',
     'client/c_control.js',
+    'client/c_render.js',
     'client/c_settings.js',
     'client/c_utils.js',
     'client/c_bounding.js',

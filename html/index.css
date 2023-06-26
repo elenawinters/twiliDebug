@@ -78,8 +78,9 @@ button:active {
 }
 
 .tooltip .tooltip-text {
+	font-size: 14px;
 	visibility: visible;
-	width: 20vw;
+	width: 12vw;
 	background-color: rgba(0, 0, 0, 0.4);
 	color: rgb(232, 184, 255);
 	text-align: left;
@@ -89,7 +90,7 @@ button:active {
 	position: fixed;
 	z-index: 1;
 	top: 110%;
-	left: 110%;
+	left: 130%;
 
 	opacity: 1;
 	transform: translate(-50%, 20%);

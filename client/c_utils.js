@@ -91,6 +91,22 @@ function RaycastFromPlayer() {
 //     return hit
 // end
 
+function distanceBetweenVectors(v1, v2) {
+    let dx = v1[0] - v2[0]
+    let dy = v1[1] - v2[1]
+    let dz = v1[2] - v2[2]
+    return Math.sqrt( dx * dx + dy * dy + dz * dz );
+}
+
+function IsEntityInRangeOfPlayer(entity, range) {
+    if (!Settings.render_text_local) { return true; }
+    if (range == null) { range = 100; }
+
+    const dist = distanceBetweenVectors(GetEntityCoords(entity), GetGameplayCamCoord())
+
+    return dist < range ? true : false
+}
+
 // function IsEntityInRangeOfPlayer(entity, range)
 //     if not Settings['render_text_local'] then
 //         return true
@@ -113,39 +129,34 @@ function RaycastFromPlayer() {
 
 
 
-// function DrawTextOnScreen(text, xPosition, yPosition, color, size, justification, center)
-//     if color == nil then
-//         color = {r=0, g=255, b=0, a=255}
-//     end
-//     if size == nil then
-//         size = 0.3
-//     end
-//     if justification == nil then
-//         justification = 0
-//     end
-//     if center == true or center == nil then
-//         SetTextCentre(true)
-//     end
-//     if GAME == 'fivem' then
-//         SetTextFont(0)
-//         -- SetTextScale(1.0, 0.4)
-//         SetTextScale(0.0, size)
-//         SetTextColour(color.r, color.g, color.b, color.a)
-//         -- SetTextColour(color['r'], color['g'], color['b'], color['a'])
-//         SetTextOutline()
-//         BeginTextCommandDisplayText("STRING");
-//         AddTextComponentSubstringPlayerName(text);
-//         EndTextCommandDisplayText(xPosition, yPosition);
-//     elseif GAME == 'redm' then
-//         local vstr = CreateVarString(10, "LITERAL_STRING", text.toString())  -- the game will crash if VALUE is not a string
-//         SetTextColor(color.r, color.g, color.b, color.a)
-//         SetTextScale(0.0, 0.35)
-//         SetTextFontForCurrentCommand(0)
-    
-//         DisplayText(vstr, xPosition, yPosition)
-//     end
 
-// end
+function DrawTextOnScreen(text, xPosition, yPosition, color, size, justification, center) {
+    if (color == null) { color = {r:0, g:255, b:0, a:255}; }
+    if (size == null) { size = 0.3; }
+    if (justification == null) { justification = 0; }
+    if (center == true || center == null) { SetTextCentre(true) }
+    switch (GAME) {
+        case FIVEM:
+            SetTextFont(0)
+            // SetTextScale(1.0, 0.4)
+            SetTextScale(0.0, size)
+            SetTextColour(color.r, color.g, color.b, color.a)
+            // SetTextColour(color['r'], color['g'], color['b'], color['a'])
+            SetTextOutline()
+            BeginTextCommandDisplayText("STRING");
+            AddTextComponentSubstringPlayerName(text);
+            EndTextCommandDisplayText(xPosition, yPosition);
+            break;
+        case REDM:
+            let vstr = CreateVarString(10, "LITERAL_STRING", text.toString())
+            SetTextColor(color.r, color.g, color.b, color.a)
+            SetTextScale(0.0, 0.35)
+            SetTextFontForCurrentCommand(0)
+        
+            DisplayText(vstr, xPosition, yPosition)
+
+    }
+}
 
 // function Round(number, places)  -- http://lua-users.org/wiki/SimpleRound
 //     local mult = 10^(places or 0)

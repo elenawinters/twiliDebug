@@ -5,6 +5,9 @@ let Cursor = false
 
 const tab_insert = '&nbsp;&nbsp;&nbsp;&nbsp;'
 
+SetEntityDrawOutlineShader(1)
+SetEntityDrawOutlineColor(255, 255, 255, 127)
+
 // Deletion Logic
 RegisterKeyMapping('+twiliDebug:deleteSelection', 'Delete selected entity', 'keyboard', 'DELETE')
 
@@ -106,11 +109,32 @@ function drawSelection() {
         entity_coords = GetEntityCoords(SelectedEntity)
         entity_rotation = GetEntityRotation(SelectedEntity)
         // Rotation:<br>${tab_insert}${entity_rotation[0]}<br>${tab_insert}${entity_rotation[1]}<br>${tab_insert}${entity_rotation[2]}<br>
+        // GetEntityHealth(SelectedEntity).."/"..GetPedMaxHealth(SelectedEntity).." ("..GetPedArmour(SelectedEntity).." armor)".."<br>"
         selInvoke("updateText", {
             ["twdebug"]: ([`
                 <div class='tooltip'><span class='tooltip-text'>
                     ${SelectedEntity}: <br>${tab_insert}${model_name} / ${entity_model}<br>
                     Coordinates:<br>${tab_insert}${entity_coords[0]}<br>${tab_insert}${entity_coords[1]}<br>${tab_insert}${entity_coords[2]}<br>
+                    Entity Type: ${GetEntityType(SelectedEntity)}<br>
+                    ${IsEntityAVehicle(SelectedEntity) ? `Vehicle:<br>
+                        ${tab_insert}Health:<br>
+                        ${GetVehicleClass(SelectedEntity) == 15 ? `
+                            ${tab_insert}${tab_insert}Main Rotor: ${GetHeliMainRotorHealth(SelectedEntity)}<br>
+                            ${tab_insert}${tab_insert}Tail Rotor: ${GetHeliTailRotorHealth(SelectedEntity)}<br>
+                            ${tab_insert}${tab_insert}Tail Boom: ${GetHeliTailBoomHealth(SelectedEntity)}<br>` : ''}
+                        ${tab_insert}${tab_insert}Engine: ${GetVehicleEngineHealth(SelectedEntity)}<br>
+                        ${tab_insert}${tab_insert}Body: ${GetVehicleBodyHealth(SelectedEntity)}<br>
+                        ${tab_insert}${tab_insert}Tank: ${GetVehiclePetrolTankHealth(SelectedEntity)}<br>
+                        ${tab_insert}${tab_insert}Tires: ${exports.twiliCore.GetCombinedWheelHealth(SelectedEntity)}<br>
+                        ${tab_insert}Temp: ${GetVehicleEngineTemperature(SelectedEntity)}<br>
+                        ${tab_insert}Oil: ${GetVehicleOilLevel(SelectedEntity)}<br>
+                        ${tab_insert}RPM: ${GetVehicleCurrentRpm(SelectedEntity)}<br>
+                        ${tab_insert}Dirt: ${GetVehicleDirtLevel(SelectedEntity)}<br>
+                        ` : ''}
+                    ${IsEntityAPed(SelectedEntity) ? `Pedestrian:<br>
+                        ${tab_insert}Health: ${GetEntityHealth(SelectedEntity)}/${GetPedMaxHealth(SelectedEntity)} (${GetPedArmour(SelectedEntity)} armor)<br>
+                        ${tab_insert}PopType: ${GetEntityPopulationType(SelectedEntity)}<br>` : ''}
+                    ${!IsEntityAVehicle(SelectedEntity) && !IsEntityAPed(SelectedEntity) ? `Health: ${GetEntityHealth(SelectedEntity)}<br>` : ''}
                 </span></div>
             `])
         })
