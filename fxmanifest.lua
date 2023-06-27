@@ -32,7 +32,8 @@ client_scripts {
     'client/c_settings.js',
     'client/c_utils.js',
     'client/c_bounding.js',
-    'client/c_select_entity.js'
+    'client/c_select_entity.js',
+    'client/c_weather.js'
 
 
 

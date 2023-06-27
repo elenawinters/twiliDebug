@@ -96,6 +96,25 @@ button:active {
 	transform: translate(-50%, 20%);
 }
 
+.tooltip2 .tooltip2-text {
+	font-size: 14px;
+	visibility: visible;
+	width: 22vw;
+	background-color: rgba(0, 0, 0, 0.4);
+	color: rgb(232, 184, 255);
+	text-align: left;
+	padding: 1vmin 1vmin;
+	border-radius: 1vmin;
+
+	position: fixed;
+	z-index: 1;
+	top: 2000%;
+	left: 110%;
+
+	opacity: 1;
+	transform: translate(-50%, 20%);
+}
+
 /* .tooltip .tooltip-text::after {
 	content: "";
 	position: absolute;
