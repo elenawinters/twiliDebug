@@ -80,7 +80,7 @@ button:active {
 .tooltip .tooltip-text {
 	font-size: 14px;
 	visibility: visible;
-	width: 12vw;
+	width: 14vw;
 	background-color: rgba(0, 0, 0, 0.4);
 	color: rgb(232, 184, 255);
 	text-align: left;
