@@ -33,7 +33,7 @@ function renderDebug() {
                     if (!onScreen) { return; }
                     DrawEntityBoundingBox(entity, {r:50, g:255, b:50, a:47})
                     if (!Settings.render_text || !IsEntityInRangeOfPlayer(entity)) { return; }
-                    DrawTextOnScreen(`${entity}~n~${GetEntityHealth(entity)}/${GetPedMaxHealth(entity)}~n~${GetEntityPopulationType(entity)}`, _x, _y)
+                    DrawTextOnScreen(`${entity}~n~${GetEntityArchetypeName(entity)}~n~${GetEntityHealth(entity)}/${GetPedMaxHealth(entity)}~n~${GetEntityPopulationType(entity)}`, _x, _y)
                 })
             } else if (renderer == 'render_objects') {
                 Object.values(GetGamePool('CObject')).forEach((entity) => {
@@ -42,7 +42,7 @@ function renderDebug() {
                     if (!onScreen) { return; }
                     DrawEntityBoundingBox(entity, {r:255, g:0, b:0, a:47})
                     if (!Settings.render_text || !IsEntityInRangeOfPlayer(entity, 50)) { return; }
-                    DrawTextOnScreen(`${entity}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y, null, 0.2)
+                    DrawTextOnScreen(`${entity}~n~${GetEntityArchetypeName(entity)}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y, null, 0.2)
 
                 })
             } else if (renderer == 'render_vehicles') {
@@ -52,7 +52,7 @@ function renderDebug() {
                     if (!onScreen) { return; }
                     DrawEntityBoundingBox(entity, {r:255, g:150, b:0, a:47})
                     if (!Settings.render_text || !IsEntityInRangeOfPlayer(entity)) { return; }
-                    DrawTextOnScreen(`${entity}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y)
+                    DrawTextOnScreen(`${entity}~n~${GetEntityArchetypeName(entity)}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y)
 
                 })
             } else if (renderer == 'render_pickups') {
@@ -62,7 +62,7 @@ function renderDebug() {
                     if (!onScreen) { return; }
                     DrawEntityBoundingBox(entity, {r:0, g:0, b:255, a:47})
                     if (!Settings.render_text || !IsEntityInRangeOfPlayer(entity)) { return; }
-                    DrawTextOnScreen(`${entity}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y)
+                    DrawTextOnScreen(`${entity}~n~${GetEntityArchetypeName(entity)}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y)
 
                 })
             }

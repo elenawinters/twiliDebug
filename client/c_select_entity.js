@@ -98,9 +98,11 @@ function drawSelection() {
         if (!DoesEntityExist(SelectedEntity)) {
             SelectedLooping = false;
             SelectedEntity = null;  // prevent Bounding script from crashing... potentially. haven't run into this but, it's good practice
-            selInvoke("setFocus", false);
-            selInvoke("toggle", false); }
-        if (!SelectedLooping) { clearTick(thread); }
+            // selInvoke("setFocus", false);
+            // selInvoke("toggle", false); 
+            selInvoke("updateText", {["twdebug"]: ([``])})
+        }
+        if (!SelectedLooping) { clearTick(thread); return; }
         // console.log(SelectedEntity)
 
         DrawEntityBoundingBox(SelectedEntity, {r:106, g:26, b:176, a:47}, 'selection')

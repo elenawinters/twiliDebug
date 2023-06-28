@@ -53,19 +53,22 @@ button:active {
 #content {
 	display: none;
 	position: absolute;
-	left: 50vw;
-	top: 6vmin;
+	/* left: 50vw; */
+	/* top: 10%;
+	left: 10%; */
 	padding: 0px;
 	margin: 0px;
 	tab-size: 0px;
-	max-height: 80vh;
-	transform: translate(-50%, 0%);
+	width: auto;
+	/* max-height: 80vh; */
+	/* transform: translate(-50%, 0%); */
 }
 
 #twdebug {
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
+	flex: 1;
 	justify-content: space-between;
 	width: 50vw;
 	max-height: 50vh;
@@ -77,10 +80,16 @@ button:active {
 	margin-right: 2vmin;
 }
 
+#twiliDebugText {
+	position: fixed;
+	top: 10%;
+	left: 20%;
+}
+
 .tooltip .tooltip-text {
 	font-size: 14px;
 	visibility: visible;
-	width: 14vw;
+	width: 16vw;
 	background-color: rgba(0, 0, 0, 0.4);
 	color: rgb(232, 184, 255);
 	text-align: left;
@@ -89,17 +98,17 @@ button:active {
 
 	position: fixed;
 	z-index: 1;
-	top: 110%;
-	left: 130%;
+	top: 20%;
+	right: 2%;
 
 	opacity: 1;
-	transform: translate(-50%, 20%);
+	/* transform: translate(-50%, 20%); */
 }
 
 .tooltip2 .tooltip2-text {
 	font-size: 14px;
 	visibility: visible;
-	width: 22vw;
+	width: 16vw;
 	background-color: rgba(0, 0, 0, 0.4);
 	color: rgb(232, 184, 255);
 	text-align: left;
@@ -108,11 +117,10 @@ button:active {
 
 	position: fixed;
 	z-index: 1;
-	top: 2000%;
-	left: 110%;
+	top: 60%;
+	right: 2%;
 
 	opacity: 1;
-	transform: translate(-50%, 20%);
 }
 
 /* .tooltip .tooltip-text::after {

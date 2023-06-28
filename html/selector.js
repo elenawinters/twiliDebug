@@ -1,3 +1,6 @@
+// document.querySelector("#content").style.display = 'block';
+// document.querySelector("#twiliDebugSelector").style.display = 'block'
+
 window.addEventListener("message", function (event) {
 	// console.log("test");
 	const data = event.data;
