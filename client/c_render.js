@@ -8,7 +8,7 @@ RegisterCommand('twiliset', (source, args) => {
     // console.log('here?')
     console.log(Renderers)
     // Settings[args[0]] = !Settings[args[0]];
-    TriggerEvent('chat:addMessage', {
+    emit('chat:addMessage', {
         color: [255, 0, 0],
         multiline: true,
         args: {"twiliDebug": `{${args[0]} is now equal to ${result}`}
@@ -33,7 +33,7 @@ function renderDebug() {
                     if (!onScreen) { return; }
                     DrawEntityBoundingBox(entity, {r:50, g:255, b:50, a:47})
                     if (!Settings.render_text || !IsEntityInRangeOfPlayer(entity)) { return; }
-                    DrawTextOnScreen(`${entity}~n~${GetEntityArchetypeName(entity)}~n~${GetEntityHealth(entity)}/${GetPedMaxHealth(entity)}~n~${GetEntityPopulationType(entity)}`, _x, _y)
+                    DrawTextOnScreen(`${entity}~n~${twiliGetEntityArchetypeName(entity)}~n~${GetEntityHealth(entity)}/${GetPedMaxHealth(entity)}~n~${GetEntityPopulationType(entity)}`, _x, _y)
                 })
             } else if (renderer == 'render_objects') {
                 Object.values(GetGamePool('CObject')).forEach((entity) => {
@@ -42,7 +42,7 @@ function renderDebug() {
                     if (!onScreen) { return; }
                     DrawEntityBoundingBox(entity, {r:255, g:0, b:0, a:47})
                     if (!Settings.render_text || !IsEntityInRangeOfPlayer(entity, 50)) { return; }
-                    DrawTextOnScreen(`${entity}~n~${GetEntityArchetypeName(entity)}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y, null, 0.2)
+                    DrawTextOnScreen(`${entity}~n~${twiliGetEntityArchetypeName(entity)}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y, null, 0.2)
 
                 })
             } else if (renderer == 'render_vehicles') {
@@ -52,7 +52,7 @@ function renderDebug() {
                     if (!onScreen) { return; }
                     DrawEntityBoundingBox(entity, {r:255, g:150, b:0, a:47})
                     if (!Settings.render_text || !IsEntityInRangeOfPlayer(entity)) { return; }
-                    DrawTextOnScreen(`${entity}~n~${GetEntityArchetypeName(entity)}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y)
+                    DrawTextOnScreen(`${entity}~n~${twiliGetEntityArchetypeName(entity)}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y)
 
                 })
             } else if (renderer == 'render_pickups') {
@@ -62,7 +62,7 @@ function renderDebug() {
                     if (!onScreen) { return; }
                     DrawEntityBoundingBox(entity, {r:0, g:0, b:255, a:47})
                     if (!Settings.render_text || !IsEntityInRangeOfPlayer(entity)) { return; }
-                    DrawTextOnScreen(`${entity}~n~${GetEntityArchetypeName(entity)}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y)
+                    DrawTextOnScreen(`${entity}~n~${twiliGetEntityArchetypeName(entity)}~n~${GetEntityModel(entity)}~n~${position}`, _x, _y)
 
                 })
             }

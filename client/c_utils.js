@@ -1,5 +1,16 @@
 // const modelHash = GetHashKey('ex_warel_girders')
 
+
+function twiliGetEntityArchetypeName(entity) {
+    switch(GAME) {
+        case FIVEM:
+            return GetEntityArchetypeName(entity)
+        default:  // this native doesn't really work in RedM. It just returns the input
+            return Citizen.invokeNative('0x47B870F5', entity);
+    }
+}
+
+
 function loadModelAndOutline(c) {
     const modelHash = GetHashKey('adder')
 

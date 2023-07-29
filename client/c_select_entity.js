@@ -5,11 +5,32 @@ let Cursor = false
 
 const tab_insert = '&nbsp;&nbsp;&nbsp;&nbsp;'
 
-SetEntityDrawOutlineShader(1)
-SetEntityDrawOutlineColor(255, 255, 255, 127)
+switch(GAME) {
+    case FIVEM:
+        SetEntityDrawOutlineShader(1)
+        SetEntityDrawOutlineColor(255, 255, 255, 127)
+        break
+    default:
+        Citizen.invokeNative('0x5261A01A', 1)  // SetEntityDrawOutlineShader
+        Citizen.invokeNative('0xB41A56C2', 255, 255, 255, 127)  // SetEntityDrawOutlineColor
+}
 
 // Deletion Logic
 RegisterKeyMapping('+twiliDebug:deleteSelection', 'Delete selected entity', 'keyboard', 'DELETE')
+
+// on('CEventDamage', function (victims, suspect) {
+//     for (let [, victim] of Object.entries(victims)) {
+//         if (!IsPedAPlayer(suspect) || !IsPedAPlayer(victim)) { return; }  // required for hybrid
+//         const position = CalculateDamagePosition(suspect, victim);
+//         const weaponHash = GetPedCauseOfDeath(victim);
+//         const isMelee = GetWeaponDamageType(weaponHash) == 2;
+//         const damageBone = GetPedLastDamageBone(victim);
+
+//         let [suspectData, victimData, situationData] = CreateSituationReport(suspect, victim, position, weaponHash, 0, damageBone, false, isMelee)
+
+//         emitNet("twiliCore:damage:_sync", suspectData, victimData, situationData);
+//     }
+// })
 
 RegisterCommand('+twiliDebug:deleteSelection', (source, args) => {
     if (!SelectedEntity) { return; }
@@ -67,7 +88,14 @@ function selectEntity() {
     // console.log(SelectedEntity)
     // console.log('baaa')
     if (lastsel != SelectedEntity && !IsEntityAPed(lastsel)) {
-        SetEntityDrawOutline(lastsel, false);
+        switch(GAME) {
+            case FIVEM:
+                SetEntityDrawOutline(lastsel, false);
+                break;
+            default:
+                Citizen.invokeNative('0x76180407', lastsel, false)
+        }
+        // SetEntityDrawOutline(lastsel, false);
     }
 
     selcoord = GetEntityCoords(SelectedEntity)
@@ -83,7 +111,14 @@ function selectEntity() {
     // console.log(SelectedEntity)
 
     if (!IsEntityAPed(SelectedEntity)) {
-        SetEntityDrawOutline(SelectedEntity, true);
+        switch(GAME) {
+            case FIVEM:
+                SetEntityDrawOutline(SelectedEntity, true);
+                break;
+            default:
+                Citizen.invokeNative('0x76180407', SelectedEntity, true)
+        }
+        // SetEntityDrawOutline(SelectedEntity, true);
     }
 }
 
@@ -107,7 +142,8 @@ function drawSelection() {
 
         DrawEntityBoundingBox(SelectedEntity, {r:106, g:26, b:176, a:47}, 'selection')
         entity_model = GetEntityModel(SelectedEntity)
-        model_name = GetEntityArchetypeName(SelectedEntity)
+        // model_name = GetEntityArchetypeName(SelectedEntity)
+        model_name = GAME == FIVEM ? GetEntityArchetypeName(SelectedEntity) : Citizen.invokeNative('0x47B870F5', SelectedEntity)
         entity_coords = GetEntityCoords(SelectedEntity)
         entity_rotation = GetEntityRotation(SelectedEntity)
         // Rotation:<br>${tab_insert}${entity_rotation[0]}<br>${tab_insert}${entity_rotation[1]}<br>${tab_insert}${entity_rotation[2]}<br>
