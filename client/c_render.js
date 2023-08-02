@@ -11,7 +11,7 @@ RegisterCommand('twiliset', (source, args) => {
     emit('chat:addMessage', {
         color: [255, 0, 0],
         multiline: true,
-        args: {"twiliDebug": `{${args[0]} is now equal to ${result}`}
+        args: ["twiliDebug", `${args[0]} is now equal to ${result}`]
     });
     renderDebug();
 });
