@@ -85,7 +85,29 @@ function RaycastFromPlayer() {
     // console.log(entityHit)
     // console.log('has it been 5 seconds?')
     // return entityHit
-    return hit, endCoords, surfaceNormal, entityHit
+    // This is jank, but, I need a 3d ray sooooo, had to adapt
+    SelectedEntity = entityHit
+    selectEntity()
+    // return hit, endCoords, surfaceNormal, entityHit
+}
+
+function RaycastFromPlayerCapsule() {
+    const playerPed = PLAYER_PED()
+    const camCoord = GetGameplayCamCoord()
+    const camRot = GetGameplayCamRot(0)
+
+    const castCoord = arrayAdd(camCoord, arrayMultiply(GetForwardVector(camRot), 1000))
+    const rayHandle = StartShapeTestCapsule(camCoord[0], camCoord[1], camCoord[2], castCoord[0], castCoord[1], castCoord[2], 10, 4294967295, playerPed, 4)
+
+    const thread = setTick(() => {
+        let [testStatus, hit, endCoords, surfaceNormal, entityHit] = GetShapeTestResult(rayHandle)
+        if (testStatus == 2) {
+            // console.log('tick cleared?')
+            clearTick(thread);
+            SelectedEntity = entityHit
+            selectEntity()
+        }
+    })
 }
 
 // function GetEntityLosFromPlayer(entity)

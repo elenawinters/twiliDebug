@@ -72,18 +72,47 @@ RegisterCommand('-twiliDebug:renderCursor', (source, args) => {
 RegisterKeyMapping('+twiliDebug:selectEntity', 'Raycast out and select an entity', 'keyboard', 'MOUSE_EXTRABTN2')
 
 RegisterCommand('+twiliDebug:selectEntity', (source, args) => {
-    selectEntity()
+    startRaycast()
     drawSelection()
 });
 
 RegisterCommand('-twiliDebug:selectEntity', (source, args) => { return; });
 
 
-function selectEntity() {
+RegisterCommand('twiliveh', (source, args) => {
+    if (SelectedEntity == null) { return; }
+    if (!IsEntityAVehicle(SelectedEntity)) { return; }
+
+    switch (args[0]) {
+        case 'enter':
+            SetPedIntoVehicle(PLAYER_PED(), SelectedEntity, -1);
+            break;
+        case 'del':
+        case 'delete':
+            DeleteEntity(SelectedEntity);
+            break;
+    }
+
+    // if (args[0] == 'enter') {
+    //     SetPedIntoVehicle(PLAYER_PED(), SelectedEntity, -1)
+    // }
+
+    // if (args[0] == )
+
+});
+
+function startRaycast() {
     lastsel = SelectedEntity;
     // console.log(SelectedEntity)
     // RaycastFromPlayerAsync_SetSelection();
-    SelectedEntity = RaycastFromPlayer();
+    RaycastFromPlayerCapsule();
+}
+
+function selectEntity() {
+    // lastsel = SelectedEntity;
+    // // console.log(SelectedEntity)
+    // // RaycastFromPlayerAsync_SetSelection();
+    // SelectedEntity = RaycastFromPlayer();
     // console.log('abbb')
     // console.log(SelectedEntity)
     // console.log('baaa')
