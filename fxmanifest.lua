@@ -40,18 +40,9 @@ client_scripts {
     'client/c_lists.js',
 
     'client/c_vehicle_bones.js'
+}
 
-
-
-    -- 'twiliSettings.lua',
-    -- 'twiliRender.lua',
-    -- 'twiliNoLocals.lua',
-    -- 'twiliControl.lua',
-    -- 'twiliBounding.lua',
-    -- 'twiliTesting.lua',
-    -- 'twiliUtils.lua',
-    -- 'twiliSelectEntity.lua',
-    -- 'twiliDamageTest.js',
-    -- 'twiliTesting.js'
+server_scripts {
+    'server/s_sync.js'
 }
 

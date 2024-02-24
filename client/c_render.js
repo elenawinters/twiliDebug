@@ -31,7 +31,11 @@ function renderDebug() {
                     let position = GetEntityCoords(entity);
                     let [onScreen, _x, _y] = GetScreenCoordFromWorldCoord(position[0], position[1], position[2])
                     if (!onScreen) { return; }
-                    DrawEntityBoundingBox(entity, {r:50, g:255, b:50, a:47})
+                    if (IsPedAPlayer(entity)) {
+                        DrawEntityBoundingBox(entity, {r:23, g:119, b:230, a:47})
+                    } else {
+                        DrawEntityBoundingBox(entity, {r:50, g:255, b:50, a:47})
+                    }
                     if (!Settings.render_text || !IsEntityInRangeOfPlayer(entity)) { return; }
                     DrawTextOnScreen(`${entity}~n~${twiliGetEntityArchetypeName(entity)}~n~${GetEntityHealth(entity)}/${GetPedMaxHealth(entity)}~n~${GetEntityPopulationType(entity)}`, _x, _y)
                 })

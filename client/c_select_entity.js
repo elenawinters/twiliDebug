@@ -32,12 +32,30 @@ RegisterKeyMapping('+twiliDebug:deleteSelection', 'Delete selected entity', 'key
 //     }
 // })
 
+// emit('twiliCore:damage:event', suspectData, victimData, situationData);
+onNet('twiliDebug:deleteEntity', (entity) => {
+    if (IsEntityAnObject(entity)) {
+        SetEntityAsMissionEntity(entity, true, true);
+    }
+    DeleteEntity(entity)
+});
+
 RegisterCommand('+twiliDebug:deleteSelection', (source, args) => {
     if (!SelectedEntity) { return; }
-    if (IsEntityAnObject(SelectedEntity)) {
-        SetEntityAsMissionEntity(SelectedEntity, true, true);
+    const network_owner = NetworkGetEntityOwner(SelectedEntity)
+    // emitNet('twiliDebug:deleteEntity:_sync', SelectedEntity, GetPlayerServerId(network_owner));
+    if (network_owner !== -1 && network_owner !== PLAYER_INDEX) {
+    // if (network_owner !== -1) {
+        emitNet('twiliDebug:deleteEntity:_sync', SelectedEntity, GetPlayerServerId(network_owner));
+    } else {
+        emit('twiliDebug:deleteEntity', SelectedEntity);
     }
-    DeleteEntity(SelectedEntity)
+    // emit('twiliDebug:deleteEntity', SelectedEntity);
+    // if (!SelectedEntity) { return; }
+    // if (IsEntityAnObject(SelectedEntity)) {
+    //     SetEntityAsMissionEntity(SelectedEntity, true, true);
+    // }
+    // DeleteEntity(SelectedEntity)
 });
 
 RegisterCommand('-twiliDebug:deleteSelection', (source, args) => { return; });
@@ -177,12 +195,20 @@ function drawSelection() {
         entity_rotation = GetEntityRotation(SelectedEntity)
         // Rotation:<br>${tab_insert}${entity_rotation[0]}<br>${tab_insert}${entity_rotation[1]}<br>${tab_insert}${entity_rotation[2]}<br>
         // GetEntityHealth(SelectedEntity).."/"..GetPedMaxHealth(SelectedEntity).." ("..GetPedArmour(SelectedEntity).." armor)".."<br>"
+        entityTypeNum = GetEntityType(SelectedEntity)
+        // if 
+        try {  // this has errored on me before so I'm just defaulting it to -1 if it errors
+            network_owner = NetworkGetEntityOwner(SelectedEntity)
+        } catch (e) {
+            console.log(`Error occured while trying to get network owner: ${e}`)
+            network_owner = -1;
+        }
         selInvoke("updateText", {
             ["twdebug"]: ([`
                 <div class='tooltip'><span class='tooltip-text'>
                     ${SelectedEntity}: <br>${tab_insert}${model_name} / ${entity_model}<br>
                     Coordinates:<br>${tab_insert}${entity_coords[0]}<br>${tab_insert}${entity_coords[1]}<br>${tab_insert}${entity_coords[2]}<br>
-                    Entity Type: ${GetEntityType(SelectedEntity)}<br>
+                    Entity Type: ${entityTypes[entityTypeNum]} (${entityTypeNum})<br>
                     ${IsEntityAVehicle(SelectedEntity) ? `Vehicle:<br>
                         ${tab_insert}Health:<br>
                         ${GetVehicleClass(SelectedEntity) == 15 ? `
@@ -202,12 +228,12 @@ function drawSelection() {
                         ${tab_insert}Health: ${GetEntityHealth(SelectedEntity)}/${GetPedMaxHealth(SelectedEntity)} (${GetPedArmour(SelectedEntity)} armor)<br>
                         ${tab_insert}PopType: ${GetEntityPopulationType(SelectedEntity)}<br>` : ''}
                     ${!IsEntityAVehicle(SelectedEntity) && !IsEntityAPed(SelectedEntity) ? `Health: ${GetEntityHealth(SelectedEntity)}<br>` : ''}
+                    Network Owner: ${GetPlayerName(network_owner)} (${GetPlayerServerId(network_owner)})
                 </span></div>
             `])
         })
     })
 }
-
 
 function selInvoke(_type, data) {
 	SendNUIMessage({

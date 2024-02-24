@@ -1,4 +1,12 @@
 // https://pastebin.com/D7JMnX1g
+
+entityTypes = {
+    0: 'No Entity',
+    1: 'Ped',
+    2: 'Vehicle',
+    3: 'Object'
+}
+
 vehicleBones = [
     "chassis",
     "chassis_lowlod",
