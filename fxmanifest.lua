@@ -5,7 +5,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 author 'Elena Winters'
 description 'Debug tools used by myself for development. Compatible with FiveM and RedM'
-version '23.10.19'
+version '24.2.24'
 
 dependencies {
     'twiliCore'
