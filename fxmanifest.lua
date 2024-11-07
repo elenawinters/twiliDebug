@@ -8,8 +8,10 @@ description 'Debug tools used by myself for development. Compatible with FiveM a
 version '24.2.24'
 
 dependencies {
-    'twiliCore'
+    'twiliCore',
+    'twiliKeybinds'
 }
+-- twiliKeybinds adds support for RedM
 
 ui_page 'html/index.html'
 
@@ -39,7 +41,9 @@ client_scripts {
 
     'client/c_lists.js',
 
-    'client/c_vehicle_bones.js'
+    'client/c_vehicle_bones.js',
+
+    'client/c_tests.js'
 }
 
 server_scripts {

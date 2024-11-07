@@ -9,10 +9,21 @@ RegisterCommand('flash', (source, args) => {
     ForceLightningFlash();
 });
 
-typelist = [
-    'BLIZZARD', 'CLEAR', 'CLEARING', 'CLOUDS', 'EXTRASUNNY', 'FOGGY', 'HALLOWEEN',
-    'NEUTRAL', 'OVERCAST', 'RAIN', 'SMOG', 'SNOW', 'SNOWLIGHT', 'THUNDER', 'XMAS'
-]
+switch (GAME) {
+    case FIVEM:
+        typelist = [
+            'BLIZZARD', 'CLEAR', 'CLEARING', 'CLOUDS', 'EXTRASUNNY', 'FOGGY', 'HALLOWEEN',
+            'NEUTRAL', 'OVERCAST', 'RAIN', 'SMOG', 'SNOW', 'SNOWLIGHT', 'THUNDER', 'XMAS'
+        ]
+        break;
+    case REDM:
+        typelist = [
+            'BLIZZARD', 'CLOUDS', 'DRIZZLE', 'FOG', 'GROUNDBLIZZARD', 'HAIL', 'HIGHPRESSURE',
+            'HURRICANE', 'MISTY', 'OVERCAST', 'OVERCASTDARK', 'RAIN', 'SANDSTORM', 'SHOWER',
+            'SLEET', 'SNOW', 'SNOWLIGHT', 'SUNNY', 'THUNDER', 'THUNDERSTORM', 'WHITEOUT'
+        ]
+        break;
+}
 
 wtypes = {}
 
@@ -29,7 +40,7 @@ function wtestdebug() {
         selInvoke("updateText", {
             ["twdebug2"]: ([`
                 <div class='tooltip2'><span class='tooltip2-text'>
-                    ${wtypes[w1]}<br>${wp*100}%<br>${wtypes[w2]}<br>
+                    ${wtypes[w1]}<br>${wp*100}%<br>${wtypes[w2]}<br>${GetRainLevel()}<br>
                 </span></div>
             `])
         })

@@ -16,7 +16,7 @@ switch(GAME) {
 }
 
 // Deletion Logic
-RegisterKeyMapping('+twiliDebug:deleteSelection', 'Delete selected entity', 'keyboard', 'DELETE')
+exports.twiliKeybinds.RegisterKeyMapping('+twiliDebug:deleteSelection', 'Delete selected entity', 'keyboard', 'DELETE')
 
 // on('CEventDamage', function (victims, suspect) {
 //     for (let [, victim] of Object.entries(victims)) {
@@ -33,7 +33,10 @@ RegisterKeyMapping('+twiliDebug:deleteSelection', 'Delete selected entity', 'key
 // })
 
 // emit('twiliCore:damage:event', suspectData, victimData, situationData);
-onNet('twiliDebug:deleteEntity', (entity) => {
+onNet('twiliDebug:deleteEntity', (entity, remote) => {
+    if (remote == true) {
+        entity = NetworkGetEntityFromNetworkId(entity)
+    }
     if (IsEntityAnObject(entity)) {
         SetEntityAsMissionEntity(entity, true, true);
     }
@@ -46,7 +49,7 @@ RegisterCommand('+twiliDebug:deleteSelection', (source, args) => {
     // emitNet('twiliDebug:deleteEntity:_sync', SelectedEntity, GetPlayerServerId(network_owner));
     if (network_owner !== -1 && network_owner !== PLAYER_INDEX) {
     // if (network_owner !== -1) {
-        emitNet('twiliDebug:deleteEntity:_sync', SelectedEntity, GetPlayerServerId(network_owner));
+        emitNet('twiliDebug:deleteEntity:_sync', NetworkGetNetworkIdFromEntity(SelectedEntity), GetPlayerServerId(network_owner));
     } else {
         emit('twiliDebug:deleteEntity', SelectedEntity);
     }
@@ -73,21 +76,23 @@ function renderCursor() {
     })
 }
 
-RegisterKeyMapping('+twiliDebug:renderCursor', 'Display cursor in center of frame', 'keyboard', 'LMENU')
+if (GAME == FIVEM) {
+    exports.twiliKeybinds.RegisterKeyMapping('+twiliDebug:renderCursor', 'Display cursor in center of frame', 'keyboard', 'LMENU')
 
-RegisterCommand('+twiliDebug:renderCursor', (source, args) => {
-    Cursor = true
-    renderCursor()
-});
+    RegisterCommand('+twiliDebug:renderCursor', (source, args) => {
+        Cursor = true
+        renderCursor()
+    });
 
-RegisterCommand('-twiliDebug:renderCursor', (source, args) => {
-    Cursor = false
-    renderCursor()
-});
+    RegisterCommand('-twiliDebug:renderCursor', (source, args) => {
+        Cursor = false
+        renderCursor()
+    });
+}
 
 
 // Selection Logic
-RegisterKeyMapping('+twiliDebug:selectEntity', 'Raycast out and select an entity', 'keyboard', 'MOUSE_EXTRABTN2')
+exports.twiliKeybinds.RegisterKeyMapping('+twiliDebug:selectEntity', 'Raycast out and select an entity', 'keyboard', 'MOUSE_MIDDLE')
 
 RegisterCommand('+twiliDebug:selectEntity', (source, args) => {
     startRaycast()
@@ -186,7 +191,7 @@ function drawSelection() {
         }
         if (!SelectedLooping) { clearTick(thread); return; }
         // console.log(SelectedEntity)
-
+        // {r=106, g=26, b=176, a=47}
         DrawEntityBoundingBox(SelectedEntity, {r:106, g:26, b:176, a:47}, 'selection')
         entity_model = GetEntityModel(SelectedEntity)
         // model_name = GetEntityArchetypeName(SelectedEntity)
@@ -223,9 +228,10 @@ function drawSelection() {
                         ${tab_insert}Oil: ${GetVehicleOilLevel(SelectedEntity)}<br>
                         ${tab_insert}RPM: ${GetVehicleCurrentRpm(SelectedEntity)}<br>
                         ${tab_insert}Dirt: ${GetVehicleDirtLevel(SelectedEntity)}<br>
+                        ${tab_insert}Fuel: ${GetVehicleFuelLevel(SelectedEntity)}<br>
                         ` : ''}
                     ${IsEntityAPed(SelectedEntity) ? `Pedestrian:<br>
-                        ${tab_insert}Health: ${GetEntityHealth(SelectedEntity)}/${GetPedMaxHealth(SelectedEntity)} (${GetPedArmour(SelectedEntity)} armor)<br>
+                        ${tab_insert}Health: ${GetEntityHealth(SelectedEntity)}/${GetPedMaxHealth(SelectedEntity)} ${GAME == FIVEM ? `(${GetPedArmour(SelectedEntity)} armor)`: ''}<br>
                         ${tab_insert}PopType: ${GetEntityPopulationType(SelectedEntity)}<br>` : ''}
                     ${!IsEntityAVehicle(SelectedEntity) && !IsEntityAPed(SelectedEntity) ? `Health: ${GetEntityHealth(SelectedEntity)}<br>` : ''}
                     Network Owner: ${GetPlayerName(network_owner)} (${GetPlayerServerId(network_owner)})
@@ -243,3 +249,5 @@ function selInvoke(_type, data) {
 		},
 	})
 }
+
+exports('selInvoke', selInvoke);
